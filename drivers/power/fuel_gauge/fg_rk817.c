@@ -1341,6 +1341,11 @@ static int rk817_fg_init(struct rk817_battery_device *battery)
 		value =  rk817_bat_read(battery, BAT_DISCHRG);
 		rk817_bat_write(battery, BAT_DISCHRG, value & (~DIS_ILIM_EN));
 	}
+
+	// ---------------wh----4/22-----------
+	value = rk817_bat_read(battery, 0xf7);
+	rk817_bat_write(battery, 0xf7, value | 0x40);
+	
 	rk817_bat_gas_gaugle_enable(battery);
 	rk817_bat_init_voltage_kb(battery);
 	rk817_bat_calibration(battery);

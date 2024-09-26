@@ -218,6 +218,9 @@ enum {
 
 #define RK8XX_DEVCTRL_REG	0x4b
 #define RK817_PWRON_KEY		0xf7
+#define RK8XX_ON_TIME       BIT(7)
+#define RK8XX_ON_TIME_500MS (0 << 7)
+#define RK8XX_ON_TIME_100MS (1 << 7)
 #define RK8XX_LP_ACTION_MSK	BIT(6)
 #define RK8XX_LP_OFF		(0 << 6)
 #define RK8XX_LP_RESTART	(1 << 6)
@@ -280,6 +283,7 @@ struct rk8xx_priv {
 	struct virq_chip *irq_chip;
 	int variant;
 	int irq;
+	int on_time_ms;
 	int lp_off_time;
 	int lp_action;
 	uint8_t sleep_pin;

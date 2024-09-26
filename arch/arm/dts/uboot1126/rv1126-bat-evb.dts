@@ -44,11 +44,6 @@
 	status = "okay";
 };
 
-&pmu_io_domains {
-	vccio5-supply-1_8v;
-	status = "okay";
-};
-
 &gpio1 {
 	status = "disabled";
 };

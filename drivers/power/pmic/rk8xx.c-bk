@@ -411,13 +411,6 @@ static int rk8xx_ofdata_to_platdata(struct udevice *dev)
 	else
 		rk8xx->lp_action = RK8XX_LP_OFF;
 
-	/* wh */
-	val = dev_read_u32_default(dev, "press-on-time", 0);
-       if(val)
-            rk8xx->on_time_ms = RK8XX_ON_TIME_100MS;
-       else
-        	rk8xx->on_time_ms = RK8XX_ON_TIME_500MS;
-
 	val = dev_read_u32_default(dev, "not-save-power-en", 0);
 	rk8xx->not_save_power_en = val;
 
@@ -491,11 +484,7 @@ static int rk8xx_probe(struct udevice *dev)
 	int ret = 0, i, show_variant;
 	uint8_t msb, lsb, id_msb, id_lsb;
 	uint8_t on_source = 0, off_source = 0;
-
-	/* wh */
-	//uint8_t pwron_key = 0, lp_off_msk = 0, lp_act_msk = 0;
-	uint8_t pwron_key = 0, on_time = 0, lp_off_msk = 0, lp_act_msk = 0;
-
+	uint8_t pwron_key = 0, lp_off_msk = 0, lp_act_msk = 0;
 	uint8_t power_en0, power_en1, power_en2, power_en3;
 	uint8_t value;
 
@@ -549,10 +538,6 @@ static int rk8xx_probe(struct udevice *dev)
 		on_source = RK817_ON_SOURCE;
 		off_source = RK817_OFF_SOURCE;
 		pwron_key = RK817_PWRON_KEY;
-
-		/* wh */
-		on_time = RK8XX_ON_TIME;
-
 		lp_off_msk = RK8XX_LP_OFF_MSK;
 		lp_act_msk = RK8XX_LP_ACTION_MSK;
 		init_data = rk817_init_reg;
@@ -609,13 +594,7 @@ static int rk8xx_probe(struct udevice *dev)
 
 	if (pwron_key) {
 		value = pmic_reg_read(dev, pwron_key);
-
-		/* wh */
-		//value &= ~(lp_off_msk | lp_act_msk);
-		value &= ~(on_time | lp_off_msk | lp_act_msk);
-        if (on_time)
-            value |= priv->on_time_ms;
-
+		value &= ~(lp_off_msk | lp_act_msk);
 		if (lp_off_msk)
 			value |= priv->lp_off_time;
 		if (lp_act_msk)

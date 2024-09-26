@@ -475,10 +475,18 @@ static int charge_animation_show(struct udevice *dev)
 	}
 
 	/* If there is preboot command, exit */
+	//-----------wh-4/22-----------
+	/*
 	if (preboot && !strstr(preboot, "dvfs")) {
 		printf("Exit charge: due to preboot cmd '%s'\n", preboot);
 		return 0;
 	}
+	*/
+	if (preboot && !strstr(preboot, "dvfs") && !strstr(preboot, "charge")) {
+		printf("Exit charge: due to preboot cmd '%s'\n", preboot);
+                return 0;
+        }
+
 
 	/* Not valid charge mode, exit */
 #ifdef CONFIG_RKIMG_BOOTLOADER
